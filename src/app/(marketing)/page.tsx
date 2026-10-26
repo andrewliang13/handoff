@@ -1,175 +1,52 @@
-import type { ReactNode } from "react";
-import type {
-  CitedClaim,
-  DayOneItem,
-  DecisionLogEntry,
-  Landmine,
-  OpenQuestion,
-  PeopleMapEntry,
-  Playbook,
-  RoleMapEntry,
-  Sop,
-} from "@/lib/types";
-import playbookJson from "../../../fixtures/northline-playbook.json";
+import Link from "next/link";
+import { Transfer } from "@/components/motion/transfer";
+import { FixturePlaybook } from "./fixture-playbook";
 
-const playbook: Playbook = playbookJson;
-
-function Cites({ claim }: { claim: CitedClaim }) {
-  return (
-    <p className="mt-2 font-mono text-xs tracking-wide text-neutral-500">
-      {claim.source_turn_ids.join(" ")}
-    </p>
-  );
-}
-
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: ReactNode;
-}) {
-  return (
-    <section className="border-t border-neutral-200 py-8">
-      <h2 className="text-sm font-medium tracking-wide text-neutral-500 uppercase">
-        {title}
-      </h2>
-      <div className="mt-4 space-y-6">{children}</div>
-    </section>
-  );
-}
-
-function Role({ entry }: { entry: RoleMapEntry }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.area}</h3>
-      <p className="text-neutral-700">{entry.owner}</p>
-      <p className="mt-1 text-neutral-800">{entry.responsibility}</p>
-      <Cites claim={entry} />
-    </article>
-  );
-}
-
-function Decision({ entry }: { entry: DecisionLogEntry }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.title}</h3>
-      <p className="mt-1 text-neutral-800">{entry.decision}</p>
-      <p className="mt-1 text-neutral-700">{entry.rationale}</p>
-      <Cites claim={entry} />
-    </article>
-  );
-}
-
-function Hazard({ entry }: { entry: Landmine }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.title}</h3>
-      <p className="mt-1 text-neutral-800">{entry.risk}</p>
-      <p className="mt-1 text-neutral-700">{entry.mitigation}</p>
-      <Cites claim={entry} />
-    </article>
-  );
-}
-
-function Procedure({ entry }: { entry: Sop }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.name}</h3>
-      <p className="text-neutral-700">{entry.when}</p>
-      <ol className="mt-2 list-decimal space-y-1 pl-5 text-neutral-800">
-        {entry.steps.map((step) => (
-          <li key={step}>{step}</li>
-        ))}
-      </ol>
-      <Cites claim={entry} />
-    </article>
-  );
-}
-
-function ChecklistItem({ entry }: { entry: DayOneItem }) {
-  return (
-    <li>
-      <span>{entry.text}</span>
-      <Cites claim={entry} />
-    </li>
-  );
-}
-
-function Person({ entry }: { entry: PeopleMapEntry }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.name}</h3>
-      <p className="text-neutral-700">{entry.role}</p>
-      <p className="mt-1 text-neutral-800">{entry.context}</p>
-      <Cites claim={entry} />
-    </article>
-  );
-}
-
-function Gap({ entry }: { entry: OpenQuestion }) {
-  return (
-    <article>
-      <h3 className="font-medium">{entry.question}</h3>
-      <p className="mt-1 text-neutral-700">{entry.reason}</p>
-      <Cites claim={entry} />
-    </article>
-  );
-}
+const serif = "[font-family:var(--font-source-serif),Georgia,serif]";
 
 export default function HomePage() {
-  const { subject } = playbook;
-
   return (
-    <main className="mx-auto w-full max-w-3xl flex-1 px-6 py-12">
-      <p className="font-mono text-xs tracking-wide text-neutral-500">
-        Fixture playbook · no model call
-      </p>
-      <h1 className="mt-3 text-3xl font-semibold tracking-tight">
-        {subject.company}
-      </h1>
-      <p className="mt-2 text-lg text-neutral-800">
-        {subject.role}. Departing leader: {subject.departing_leader}.
-      </p>
-      <Cites claim={subject} />
+    <main className="flex-1">
+      <header className="mx-auto flex w-full max-w-6xl items-baseline justify-between gap-6 px-6 pt-7">
+        <p className={`${serif} text-[1.7rem] leading-none tracking-[-0.03em]`}>
+          Handoff
+        </p>
+        <a
+          href="#northline"
+          className="text-sm text-[#3f3a33] underline decoration-[#1c1916]/30 underline-offset-4 outline-offset-4 hover:decoration-[#1c1916] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1c1916]"
+        >
+          Northline fixture
+        </a>
+      </header>
 
-      <Section title="Role map">
-        {playbook.role_map.map((entry) => (
-          <Role key={entry.id} entry={entry} />
-        ))}
-      </Section>
-      <Section title="Decision log">
-        {playbook.decision_log.map((entry) => (
-          <Decision key={entry.id} entry={entry} />
-        ))}
-      </Section>
-      <Section title="Landmines">
-        {playbook.landmines.map((entry) => (
-          <Hazard key={entry.id} entry={entry} />
-        ))}
-      </Section>
-      <Section title="SOPs">
-        {playbook.sops.map((entry) => (
-          <Procedure key={entry.id} entry={entry} />
-        ))}
-      </Section>
-      <Section title="Day one">
-        <ul className="space-y-4">
-          {playbook.day_one_checklist.map((entry) => (
-            <ChecklistItem key={entry.id} entry={entry} />
-          ))}
-        </ul>
-      </Section>
-      <Section title="People">
-        {playbook.people_map.map((entry) => (
-          <Person key={entry.id} entry={entry} />
-        ))}
-      </Section>
-      <Section title="Open questions">
-        {playbook.open_questions.map((entry) => (
-          <Gap key={entry.id} entry={entry} />
-        ))}
-      </Section>
+      <div className="mx-auto mt-5 w-full max-w-6xl px-6" aria-hidden="true">
+        <div className="h-px bg-[#1c1916]/15" />
+      </div>
+
+      <section className="mx-auto grid w-full max-w-6xl items-end gap-14 px-6 pt-12 pb-20 lg:grid-cols-[minmax(0,1.2fr)_minmax(18rem,0.8fr)] lg:gap-16 lg:pt-16 lg:pb-24">
+        <div className="max-w-2xl">
+          <h1
+            className={`${serif} text-[clamp(2.35rem,4.4vw,3.65rem)] leading-[1.12] tracking-[-0.025em] text-balance`}
+          >
+            A departing leader&apos;s knowledge becomes a day-1 playbook
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-[#3f3a33]">
+            An exit interview captures what only they know, then turns that
+            record into a cited playbook the successor can open on Monday.
+          </p>
+          <div className="mt-8">
+            <Link
+              href="/handoff"
+              className="inline-flex bg-[#1c1916] px-5 py-3 text-sm font-medium text-[#f6f1e7] outline-offset-4 hover:bg-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#1c1916]"
+            >
+              Start exit interview
+            </Link>
+          </div>
+        </div>
+        <Transfer />
+      </section>
+
+      <FixturePlaybook />
     </main>
   );
 }

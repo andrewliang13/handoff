@@ -1,3 +1,3 @@
 # Motion components
 
-UI-Motion owns this folder. Progress animation and the knowledge-transfer visual land here.
+UI-Motion owns this folder. `transfer.tsx` is the CSS-only interview-to-playbook visual. Progress animation lands here too.

@@ -24,3 +24,207 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Interview-to-playbook transfer. Resting styles are the finished state. */
+.handoff-transfer {
+  margin: 0;
+  color: #1c1916;
+}
+
+.handoff-transfer-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: stretch;
+  padding: 0.35rem 0;
+}
+
+.handoff-transfer-sheet {
+  min-width: 0;
+  overflow: hidden;
+  background: #faf7f0;
+  border: 1px solid rgba(28, 25, 22, 0.18);
+  padding: 0.85rem 0.9rem 0.35rem;
+}
+
+.handoff-transfer-interview {
+  transform: rotate(-1.1deg);
+  transform-origin: 100% 50%;
+}
+
+.handoff-transfer-playbook {
+  border-left: 3px solid #1c1916;
+}
+
+.handoff-transfer-label {
+  margin: 0 0 0.7rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4e4942;
+}
+
+.handoff-transfer-line {
+  display: block;
+  margin: 0;
+  border-top: 1px solid rgba(28, 25, 22, 0.1);
+  padding: 0.42rem 0;
+  font-family: var(--font-source-serif), Georgia, "Times New Roman", serif;
+  font-size: 0.98rem;
+  line-height: 1.3;
+}
+
+.handoff-transfer-source {
+  opacity: 0.38;
+}
+
+.handoff-transfer-settled {
+  opacity: 1;
+}
+
+.handoff-transfer-gutter {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #4e4942;
+}
+
+.handoff-transfer-caption {
+  margin: 0.85rem 0 0;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: #4e4942;
+}
+
+@media (max-width: 640px) {
+  .handoff-transfer-stage {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .handoff-transfer-interview,
+  .handoff-transfer-playbook {
+    width: 100%;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .handoff-transfer-source {
+    animation-name: handoff-transfer-leave;
+    animation-duration: 1.05s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+  }
+
+  .handoff-transfer-settled {
+    opacity: 0;
+    animation-name: handoff-transfer-arrive;
+    animation-duration: 1.05s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+  }
+
+  .handoff-transfer-delay-1 {
+    animation-delay: 0.14s;
+  }
+
+  .handoff-transfer-delay-2 {
+    animation-delay: 0.28s;
+  }
+
+  .handoff-transfer-arrive-1 {
+    animation-delay: 0.32s;
+  }
+
+  .handoff-transfer-arrive-2 {
+    animation-delay: 0.46s;
+  }
+
+  .handoff-transfer-arrive-3 {
+    animation-delay: 0.6s;
+  }
+}
+
+@keyframes handoff-transfer-leave {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0.38;
+    transform: translate3d(1.35rem, 0, 0);
+  }
+}
+
+@keyframes handoff-transfer-arrive {
+  from {
+    opacity: 0;
+    transform: translate3d(-1.1rem, 0, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) {
+  .handoff-transfer-source {
+    animation-name: handoff-transfer-leave-down;
+  }
+
+  .handoff-transfer-settled {
+    animation-name: handoff-transfer-arrive-down;
+  }
+}
+
+@keyframes handoff-transfer-leave-down {
+  from {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    opacity: 0.38;
+    transform: translate3d(0, 0.45rem, 0);
+  }
+}
+
+@keyframes handoff-transfer-arrive-down {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -0.4rem, 0);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .handoff-transfer-source,
+  .handoff-transfer-settled,
+  .handoff-transfer-interview,
+  .handoff-transfer-playbook {
+    animation: none;
+  }
+
+  .handoff-transfer-source {
+    opacity: 0.38;
+    transform: none;
+  }
+
+  .handoff-transfer-settled {
+    opacity: 1;
+    transform: none;
+  }
+}
