@@ -5,6 +5,7 @@ import type { CoverageMap, Playbook, Transcript, TranscriptTurn } from "@/lib/ty
 import playbookJson from "../../../../fixtures/northline-playbook.json";
 import transcriptJson from "../../../../fixtures/northline-transcript.json";
 import { PlaybookDocument } from "@/components/playbook/playbook-document";
+import { answerSampleQuestion } from "@/components/playbook/sample-answer";
 import { SuccessorAsk } from "@/components/playbook/successor-ask";
 import { CapturePanel } from "@/components/interview/capture-panel";
 import {
@@ -84,7 +85,7 @@ export function HandoffClient() {
     resetWork();
     setSample(true);
     setBusy(false);
-    setSessionId(sampleTranscript.id);
+    setSessionId(null);
     setTurns(sampleTranscript.turns);
     setPlaybook(samplePlaybook);
     setCoverage(fullCoverage());
@@ -238,16 +239,25 @@ export function HandoffClient() {
   }
 
   async function ask(nextQuestion: string) {
-    if (!sessionId) return;
+    const liveSession = Boolean(sessionId) && !sample;
     setBusy(true);
     setError(null);
     setQa(null);
+    setActiveClaimId(null);
+    setActiveTurnIds([]);
     try {
+      if (!liveSession || !sessionId) {
+        const view = answerSampleQuestion({ question: nextQuestion, playbook, turns });
+        setQa(view);
+        if (view.kind === "answer" && view.source_turn_ids.length) {
+          setActiveTurnIds(view.source_turn_ids);
+        }
+        return;
+      }
       const data = await postJson("/api/qa", sessionBody(sessionId, { question: nextQuestion }));
       const view = readQa(data);
       setQa(view);
       if (view.kind === "answer" && view.source_turn_ids.length) {
-        setActiveClaimId(null);
         setActiveTurnIds(view.source_turn_ids);
       }
     } catch (err) {
@@ -323,7 +333,7 @@ export function HandoffClient() {
             <p className="mt-8 text-[#3f3a33]">The playbook appears here once a handoff is ready.</p>
           ) : null}
           <SuccessorAsk
-            disabled={!sessionId || phase !== "ready"}
+            disabled={phase !== "ready" || (!sessionId && !sample)}
             busy={busy}
             result={qa}
             onAsk={(next) => void ask(next)}
