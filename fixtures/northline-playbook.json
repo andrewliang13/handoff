@@ -1,0 +1,193 @@
+{
+  "id": "northline-platform-em-playbook",
+  "transcript_id": "northline-platform-em-interview",
+  "subject": {
+    "company": "Northline Labs",
+    "role": "Engineering manager, Platform",
+    "departing_leader": "Maya Chen",
+    "source_turn_ids": ["t01", "t02"]
+  },
+  "role_map": [
+    {
+      "id": "role-deploy",
+      "area": "Deploy pipeline",
+      "owner": "Jonah Hale",
+      "responsibility": "Owns the deploy pipeline. Posts the Thursday change list in #platform-deploys and must be involved in any merge to main after the Thursday cutoff.",
+      "source_turn_ids": ["t02", "t08"]
+    },
+    {
+      "id": "role-billing",
+      "area": "Billing integrations",
+      "owner": "Priya Nair",
+      "responsibility": "Owns billing integrations and is the only person who can sign off on the Stripe webhook migration.",
+      "source_turn_ids": ["t02", "t04"]
+    },
+    {
+      "id": "role-oncall",
+      "area": "Data plane on-call",
+      "owner": "Chris Okonkwo",
+      "responsibility": "Owns on-call for the data plane. Page him on PagerDuty service northline-data-plane. He does not answer Slack after 19:00.",
+      "source_turn_ids": ["t02", "t08"]
+    },
+    {
+      "id": "role-manager-seat",
+      "area": "Vendor renewals and weekly planning",
+      "owner": "Maya Chen until Friday, then the successor",
+      "responsibility": "Maya still owns vendor renewals and the weekly planning ritual. The successor approves the Thursday deploy after she leaves.",
+      "source_turn_ids": ["t01", "t02", "t08"]
+    },
+    {
+      "id": "role-director",
+      "area": "Director",
+      "owner": "Lena Ortiz",
+      "responsibility": "Director. Wants a Monday status note, not a slide deck. Escalate to her only if customers cannot pay or the data plane is down more than 30 minutes.",
+      "source_turn_ids": ["t02", "t08"]
+    }
+  ],
+  "decision_log": [
+    {
+      "id": "decision-multi-region",
+      "title": "Multi-region rollout frozen until Q2",
+      "decision": "The multi-region rollout stays frozen until Q2.",
+      "rationale": "The board asked for multi-region in March. Jonah and Maya stopped it after the March 12 outage because the team cannot staff a second region. The team has not been told the freeze is permanent. Lena wants the successor to say that in the first staff meeting.",
+      "source_turn_ids": ["t04", "t10"]
+    },
+    {
+      "id": "decision-billing-path",
+      "title": "No new services in the billing path",
+      "decision": "No new services enter the billing path until the Stripe webhook migration finishes.",
+      "rationale": "Priya is the only person who can sign off on that migration.",
+      "source_turn_ids": ["t04"]
+    }
+  ],
+  "landmines": [
+    {
+      "id": "landmine-deploy-freeze",
+      "title": "Weekend deploy freeze",
+      "risk": "Deploys are frozen from Friday 16:00 to Monday 10:00 Pacific. A Friday ship in February paged Chris for six hours.",
+      "mitigation": "Do not ship inside the freeze window.",
+      "source_turn_ids": ["t06"]
+    },
+    {
+      "id": "landmine-webhook-secret",
+      "title": "Shared webhook secret name",
+      "risk": "The billing sandbox and production share a webhook secret name in 1Password. Rotating the wrong item stops invoices.",
+      "mitigation": "Ask Priya which item is live before rotating either secret.",
+      "source_turn_ids": ["t06"]
+    }
+  ],
+  "sops": [
+    {
+      "id": "sop-thursday-deploy",
+      "name": "Thursday deploy",
+      "when": "Every Thursday, before 15:00 Pacific.",
+      "steps": [
+        "Jonah posts the change list in #platform-deploys before 15:00 Pacific.",
+        "Maya, or the successor after Friday, approves the list.",
+        "Nothing merges to main after that cutoff without Jonah."
+      ],
+      "source_turn_ids": ["t08"]
+    },
+    {
+      "id": "sop-incident",
+      "name": "Incident escalation",
+      "when": "When the data plane or billing is failing.",
+      "steps": [
+        "Page Chris via PagerDuty service northline-data-plane.",
+        "If the incident is billing, also page Priya.",
+        "Escalate to Lena only if customers cannot pay or the data plane is down more than 30 minutes.",
+        "After 19:00, do not use Slack. Chris will not answer. Use the page."
+      ],
+      "source_turn_ids": ["t08"]
+    }
+  ],
+  "day_one_checklist": [
+    {
+      "id": "day-postmortem",
+      "text": "Read the March 12 postmortem in the Platform Drive.",
+      "source_turn_ids": ["t10"]
+    },
+    {
+      "id": "day-jonah",
+      "text": "Sit with Jonah for the Thursday deploy review.",
+      "source_turn_ids": ["t10"]
+    },
+    {
+      "id": "day-vault",
+      "text": "Get the 1Password vault Platform-Prod from Lena, not from IT.",
+      "source_turn_ids": ["t10"]
+    },
+    {
+      "id": "day-monday-note",
+      "text": "Send Lena the Monday status note by 11:00.",
+      "source_turn_ids": ["t02", "t10"]
+    },
+    {
+      "id": "day-no-reorg",
+      "text": "Do not announce a reorg.",
+      "source_turn_ids": ["t10"]
+    },
+    {
+      "id": "day-freeze-staff",
+      "text": "In the first staff meeting, tell the team the multi-region freeze is permanent. Maya has not said that. Lena wants the successor to.",
+      "source_turn_ids": ["t10"]
+    }
+  ],
+  "people_map": [
+    {
+      "id": "person-lena",
+      "name": "Lena Ortiz",
+      "role": "Director",
+      "context": "Skip-level and the Monday audience. She wants a status note, not a slide deck, and she holds the Platform-Prod 1Password vault. Escalate only for payment outages or a data-plane outage longer than 30 minutes. She is also the person to ask about the on-call secondary.",
+      "source_turn_ids": ["t02", "t08", "t10", "t12"]
+    },
+    {
+      "id": "person-jonah",
+      "name": "Jonah Hale",
+      "role": "Engineer, deploy pipeline",
+      "context": "First pair on deploys. Owns the deploy pipeline and the Thursday change list. He and Maya stopped the multi-region rollout after the March 12 outage.",
+      "source_turn_ids": ["t02", "t04", "t08", "t10", "t12"]
+    },
+    {
+      "id": "person-priya",
+      "name": "Priya Nair",
+      "role": "Engineer, billing integrations",
+      "context": "Single point of failure on billing. Only signer for the Stripe webhook migration. Knows which 1Password webhook secret is live. Page her on billing incidents.",
+      "source_turn_ids": ["t02", "t04", "t06", "t08", "t12"]
+    },
+    {
+      "id": "person-chris",
+      "name": "Chris Okonkwo",
+      "role": "Engineer, data-plane on-call",
+      "context": "Pages only. Owns on-call for the data plane via PagerDuty service northline-data-plane. A Friday deploy in February paged him for six hours. He does not answer Slack after 19:00.",
+      "source_turn_ids": ["t02", "t06", "t08", "t12"]
+    },
+    {
+      "id": "person-maya",
+      "name": "Maya Chen",
+      "role": "Departing engineering manager, Platform",
+      "context": "Last day is Friday. She still owns vendor renewals and the weekly planning ritual. She named three engineers and said the team has four.",
+      "source_turn_ids": ["t01", "t02"]
+    }
+  ],
+  "open_questions": [
+    {
+      "id": "oq-fourth-engineer",
+      "question": "Who is the fourth Platform engineer?",
+      "reason": "Maya said there are four engineers and named Jonah Hale, Priya Nair, and Chris Okonkwo. She did not name the fourth.",
+      "source_turn_ids": ["t02"]
+    },
+    {
+      "id": "oq-datadog",
+      "question": "Who owns the Datadog contract renewal?",
+      "reason": "It expires in January and was never assigned. Maya does not know the owner.",
+      "source_turn_ids": ["t12"]
+    },
+    {
+      "id": "oq-oncall-secondary",
+      "question": "How is the on-call secondary chosen when Chris is out?",
+      "reason": "Maya never wrote the rule down. She guessed last time and said to ask Lena.",
+      "source_turn_ids": ["t12"]
+    }
+  ]
+}

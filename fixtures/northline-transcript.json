@@ -1,0 +1,79 @@
+{
+  "id": "northline-platform-em-interview",
+  "company": "Northline Labs",
+  "role": "Engineering manager, Platform",
+  "turns": [
+    {
+      "id": "t01",
+      "speaker": "interviewer",
+      "text": "Maya Chen, you manage Platform engineering at Northline Labs, and your last day is Friday. Start with the team. Who owns what?",
+      "timestamp": "00:00:08"
+    },
+    {
+      "id": "t02",
+      "speaker": "leader",
+      "text": "There are four engineers. Jonah Hale owns the deploy pipeline. Priya Nair owns billing integrations. Chris Okonkwo owns on-call for the data plane. I still own vendor renewals and the weekly planning ritual. My director is Lena Ortiz. She wants a Monday status note, not a slide deck.",
+      "timestamp": "00:00:42"
+    },
+    {
+      "id": "t03",
+      "speaker": "interviewer",
+      "text": "What decisions should the next manager leave closed?",
+      "timestamp": "00:01:18"
+    },
+    {
+      "id": "t04",
+      "speaker": "leader",
+      "text": "We froze the multi-region rollout until Q2. The board asked for it in March. Jonah and I stopped it after the March 12 outage because we cannot staff a second region. Also, no new services in the billing path until the Stripe webhook migration finishes. Priya is the only person who can sign off on that migration.",
+      "timestamp": "00:01:55"
+    },
+    {
+      "id": "t05",
+      "speaker": "interviewer",
+      "text": "What blows up in the first month if the new manager is careless?",
+      "timestamp": "00:02:40"
+    },
+    {
+      "id": "t06",
+      "speaker": "leader",
+      "text": "Two landmines. The deploy freeze window is Friday 16:00 to Monday 10:00 Pacific. Someone shipped on a Friday in February and we paged Chris for six hours. And the billing sandbox and production share a webhook secret name in 1Password. Priya knows which item is live. If you rotate the wrong one, invoices stop.",
+      "timestamp": "00:03:22"
+    },
+    {
+      "id": "t07",
+      "speaker": "interviewer",
+      "text": "Walk me through the Thursday deploy and the incident path.",
+      "timestamp": "00:04:05"
+    },
+    {
+      "id": "t08",
+      "speaker": "leader",
+      "text": "Jonah posts the change list in #platform-deploys before 15:00 Pacific on Thursday. I approve, or the successor does. Nothing merges to main after that without Jonah. For an incident, page Chris via PagerDuty service northline-data-plane. If it is billing, also page Priya. Escalate to Lena only if customers cannot pay or the data plane is down more than 30 minutes. Chris will not answer Slack after 19:00. Use the page.",
+      "timestamp": "00:04:48"
+    },
+    {
+      "id": "t09",
+      "speaker": "interviewer",
+      "text": "What should day one look like?",
+      "timestamp": "00:05:36"
+    },
+    {
+      "id": "t10",
+      "speaker": "leader",
+      "text": "Read the March 12 postmortem in the Platform Drive. Sit with Jonah for the Thursday deploy review. Get the 1Password vault Platform-Prod from Lena, not from IT. Send Lena the Monday note by 11:00. Do not announce a reorg. I have not told the team the multi-region freeze is permanent. Lena wants you to say that in the first staff meeting.",
+      "timestamp": "00:06:14"
+    },
+    {
+      "id": "t11",
+      "speaker": "interviewer",
+      "text": "Who else matters, and what is still unanswered?",
+      "timestamp": "00:07:02"
+    },
+    {
+      "id": "t12",
+      "speaker": "leader",
+      "text": "Lena is your skip and the Monday audience. Jonah is your first pair on deploys. Priya is a single point of failure on billing. Chris is pages only. I do not know who owns the Datadog contract renewal. It expires in January and it was never assigned. I also never wrote down how we pick the on-call secondary when Chris is out. Ask Lena. I guessed last time.",
+      "timestamp": "00:07:40"
+    }
+  ]
+}
